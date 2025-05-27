@@ -59,7 +59,6 @@ namespace SLAEkurs
             {
                 int n = (int)numericEquationSize.Value;
 
-                // Валідація меж генерації
                 if (!int.TryParse(textBoxMinRand.Text, out int minRand) ||
                     !int.TryParse(textBoxMaxRand.Text, out int maxRand))
                 {
@@ -75,27 +74,23 @@ namespace SLAEkurs
 
                 Random rnd = new Random();
 
-                // Очистити старі дані та створити нову структуру
                 dataGridA.Columns.Clear();
                 dataGridA.Rows.Clear();
                 dataGridB.Columns.Clear();
                 dataGridB.Rows.Clear();
 
-                // Створити стовпці
                 for (int j = 0; j < n; j++)
                 {
                     dataGridA.Columns.Add($"col{j}", $"x{j + 1}");
                 }
                 dataGridB.Columns.Add("colB", "b");
 
-                // Додати рядки
                 for (int i = 0; i < n; i++)
                 {
                     dataGridA.Rows.Add();
                     dataGridB.Rows.Add();
                 }
 
-                // Заповнити рандомними значеннями
                 for (int i = 0; i < n; i++)
                 {
                     dataGridB.Rows[i].Cells[0].Value = rnd.Next(minRand, maxRand + 1);
