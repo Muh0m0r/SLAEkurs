@@ -72,12 +72,11 @@ namespace SLAEkurs
         public static double[] SolveGauss(double[,] A, double[] b)
         {
             int n = b.Length;
-            double[,] a = (double[,])A.Clone(); // Копіюємо матрицю, щоб не змінювати оригінал
+            double[,] a = (double[,])A.Clone();
             double[] rhs = (double[])b.Clone();
 
             for (int k = 0; k < n - 1; k++)
             {
-                // Знаходимо індекс головного елемента у k-му стовпці, починаючи з рядка k
                 int maxIndex = k;
                 double maxValue = Math.Abs(a[k, k]);
 
@@ -90,7 +89,6 @@ namespace SLAEkurs
                     }
                 }
 
-                // Якщо головний елемент не на поточному рядку, міняємо рядки місцями
                 if (maxIndex != k)
                 {
                     for (int j = 0; j < n; j++)
@@ -105,11 +103,9 @@ namespace SLAEkurs
                     rhs[maxIndex] = tmpB;
                 }
 
-                // Перевірка на нульовий головний елемент (щоб уникнути ділення на нуль)
                 if (Math.Abs(a[k, k]) < 1e-10)
                     throw new Exception("Система або підсистема вироджена, головний елемент дорівнює нулю.");
 
-                // Елімінація (занулення елементів під головним)
                 for (int i = k + 1; i < n; i++)
                 {
                     double factor = a[i, k] / a[k, k];
@@ -123,7 +119,6 @@ namespace SLAEkurs
                 }
             }
 
-            // Зворотна підстановка
             double[] x = new double[n];
             for (int i = n - 1; i >= 0; i--)
             {
@@ -147,7 +142,6 @@ namespace SLAEkurs
             int[] P;
             double[,] LU = LUPDecomposition(A, out P);
 
-            // Forward substitution (Ly = Pb)
             double[] y = new double[n];
             for (int i = 0; i < n; i++)
             {
@@ -156,7 +150,6 @@ namespace SLAEkurs
                     y[i] -= LU[i, j] * y[j];
             }
 
-            // Backward substitution (Ux = y)
             double[] x = new double[n];
             for (int i = n - 1; i >= 0; i--)
             {
@@ -180,7 +173,6 @@ namespace SLAEkurs
 
             for (int k = 0; k < n; k++)
             {
-                // Пошук головного елемента
                 double max = 0.0;
                 int pivot = k;
                 for (int i = k; i < n; i++)
@@ -196,7 +188,6 @@ namespace SLAEkurs
                 if (max < 1e-12)
                     throw new Exception("Матриця вироджена (немає оберненої матриці)");
 
-                // Обмін рядків
                 if (pivot != k)
                 {
                     int tmp = P[k];
@@ -211,7 +202,6 @@ namespace SLAEkurs
                     }
                 }
 
-                // Обчислення L та U
                 for (int i = k + 1; i < n; i++)
                 {
                     LU[i, k] /= LU[k, k];
